@@ -1,9 +1,0 @@
-#include "syscall.h"
-
-void main()
-{
-	char c;
-	ReadChar(c);
-	PrintChar(c);
-	Halt();
-}
