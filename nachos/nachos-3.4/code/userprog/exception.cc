@@ -153,7 +153,7 @@ void ExceptionHandler(ExceptionType which)
                     char* buffer;
                     int MAX_BUFFER = 255;
                     buffer = new char[MAX_BUFFER + 1];
-                    int numbytes = gSynchConsole->Read(buffer, MAX_BUFFER);// doc buffer toi da MAX_BUFFER ki tu, sau do tra ve so ki tu doc dc
+                    int numbytes = SynchConsole->Read(buffer, MAX_BUFFER);// doc buffer toi da MAX_BUFFER ki tu, sau do tra ve so ki tu doc dc
                     int number = 0; // ket qua cuoi cung doc duoc
 						
                     // Qua trinh chuyen doi tu buffer sang so nguyen int
@@ -271,7 +271,7 @@ void ExceptionHandler(ExceptionType which)
                         return;
                     }
 		    buffer[numberOfNum] = 0;	
-                    gSynchConsole->Write(buffer, numberOfNum);
+                    SynchConsole->Write(buffer, numberOfNum);
                     delete buffer;
                     IncreasePC();
                     return;        			
@@ -311,7 +311,7 @@ void ExceptionHandler(ExceptionType which)
 		
 			int maxBytes = 256;
 			char* buffer = new char[256]; //luu day ky tu nguoi dung nhap vao (toi da 255)
-			int numBytes = gSynchConsole->Read(buffer, maxBytes);
+			int numBytes = SynchConsole->Read(buffer, maxBytes);
 
 			if(numBytes >1) //Nhap nhieu hon 1 ky tu thi bao loi
 			{
@@ -340,7 +340,7 @@ void ExceptionHandler(ExceptionType which)
 			//Output: Ki tu loai char
 			//Xuat ki tu ra man hinh
 			char c = (char)machine->ReadRegister(4);
-			gSynchConsole->Write(&c, 1);
+			SynchConsole->Write(&c, 1);
 			IncreasePC();
 			return;
 		}
