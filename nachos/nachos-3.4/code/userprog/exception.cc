@@ -308,11 +308,9 @@ void ExceptionHandler(ExceptionType which)
 
 		case SC_ReadChar:
 		{	
-			//Input: 1 ky tu 
-			//Output: Khong co
-			//Doc vao 1 ky tu kieu char
-			int maxBytes = 255;
-			char* buffer = new char[255];
+		
+			int maxBytes = 256;
+			char* buffer = new char[256]; //luu day ky tu nguoi dung nhap vao (toi da 255)
 			int numBytes = gSynchConsole->Read(buffer, maxBytes);
 
 			if(numBytes >1) //Nhap nhieu hon 1 ky tu thi bao loi
