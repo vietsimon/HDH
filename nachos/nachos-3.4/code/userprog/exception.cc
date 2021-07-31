@@ -309,16 +309,16 @@ void ExceptionHandler(ExceptionType which)
 		case SC_ReadChar:
 		{	
 		
-			int maxBytes = 256;
+			int maxChar = 256;
 			char* buffer = new char[256]; //luu day ky tu nguoi dung nhap vao (toi da 255)
-			int numBytes = gSynchConsole->Read(buffer, maxBytes);
+			int lengthChar = gSynchConsole->Read(buffer, maxChar);
 
-			if(numBytes >1) //Nhap nhieu hon 1 ky tu thi bao loi
+			if(lengthChar >1) //Nhap nhieu hon 1 ky tu thi bao loi
 			{
 				printf("Input only a character ");
 				machine->WriteRegister(2, 0);
 			}
-			else if(numBytes ==0) //NULL
+			else if(lengthChar ==0) //NULL
 			{
 				printf("NULL!");
 				machine->WriteRegister(2, 0);
