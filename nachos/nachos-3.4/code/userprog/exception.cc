@@ -227,7 +227,7 @@ void ExceptionHandler(ExceptionType which)
                     int number = machine->ReadRegister(4);
 		    if(number == 0)
                     {
-                        gSynchConsole->Write("0", 1); // In ra man hinh so 0
+                        SynchConsole->Write("0", 1); // In ra man hinh so 0
                         IncreasePC();
                         return;    
                     }
@@ -265,7 +265,7 @@ void ExceptionHandler(ExceptionType which)
                     {
                         buffer[0] = '-';
 			buffer[numberOfNum + 1] = 0;
-                        gSynchConsole->Write(buffer, numberOfNum + 1);
+                        SynchConsole->Write(buffer, numberOfNum + 1);
                         delete buffer;
                         IncreasePC();
                         return;
@@ -285,7 +285,7 @@ void ExceptionHandler(ExceptionType which)
 			virtualAddr = machine->ReadRegister(4);
 			length = machine->ReadRegister(5);
 			buffer = User2Sys(virtualAddr, length);
-			gSynchConsole->Read(buffer, length);
+			SynchConsole->Read(buffer, length);
 			Sys2User(virtualAddr, length, buffer);
 			delete buffer;
 			IncreasePC();
@@ -300,7 +300,7 @@ void ExceptionHandler(ExceptionType which)
 			buffer = User2Sys(virtualAddr, 255);
 			int length = 0;
 			while (buffer[length] != 0) length++;
-			gSynchConsole->Write(buffer, length + 1);
+			SynchConsole->Write(buffer, length + 1);
 			delete buffer;
 			IncreasePC();
 			return;
