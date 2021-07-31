@@ -1,4 +1,4 @@
-﻿// exception.cc 
+// exception.cc 
 //	Entry point into the Nachos kernel from user programs.
 //	There are two kinds of things that can cause control to
 //	transfer back to here from user code:
@@ -153,7 +153,7 @@ void ExceptionHandler(ExceptionType which)
                     char* buffer;
                     int MAX_BUFFER = 255;
                     buffer = new char[MAX_BUFFER + 1];
-                    int numbytes = SynchConsole->Read(buffer, MAX_BUFFER);// doc buffer toi da MAX_BUFFER ki tu, sau do tra ve so ki tu doc dc
+                    int numbytes = gSynchConsole->Read(buffer, MAX_BUFFER);// doc buffer toi da MAX_BUFFER ki tu, sau do tra ve so ki tu doc dc
                     int number = 0; // ket qua cuoi cung doc duoc
 						
                     // Qua trinh chuyen doi tu buffer sang so nguyen int
@@ -227,7 +227,7 @@ void ExceptionHandler(ExceptionType which)
                     int number = machine->ReadRegister(4);
 		    if(number == 0)
                     {
-                        SynchConsole->Write("0", 1); // In ra man hinh so 0
+                        gSynchConsole->Write("0", 1); // In ra man hinh so 0
                         IncreasePC();
                         return;    
                     }
@@ -265,13 +265,13 @@ void ExceptionHandler(ExceptionType which)
                     {
                         buffer[0] = '-';
 			buffer[numberOfNum + 1] = 0;
-                        SynchConsole->Write(buffer, numberOfNum + 1);
+                        gSynchConsole->Write(buffer, numberOfNum + 1);
                         delete buffer;
                         IncreasePC();
                         return;
                     }
 		    buffer[numberOfNum] = 0;	
-                    SynchConsole->Write(buffer, numberOfNum);
+                    gSynchConsole->Write(buffer, numberOfNum);
                     delete buffer;
                     IncreasePC();
                     return;        			
@@ -285,7 +285,7 @@ void ExceptionHandler(ExceptionType which)
 			virtualAddr = machine->ReadRegister(4);
 			length = machine->ReadRegister(5);
 			buffer = User2Sys(virtualAddr, length);
-			SynchConsole->Read(buffer, length);
+			gSynchConsole->Read(buffer, length);
 			Sys2User(virtualAddr, length, buffer);
 			delete buffer;
 			IncreasePC();
@@ -300,7 +300,7 @@ void ExceptionHandler(ExceptionType which)
 			buffer = User2Sys(virtualAddr, 255);
 			int length = 0;
 			while (buffer[length] != 0) length++;
-			SynchConsole->Write(buffer, length + 1);
+			gSynchConsole->Write(buffer, length + 1);
 			delete buffer;
 			IncreasePC();
 			return;
@@ -309,16 +309,16 @@ void ExceptionHandler(ExceptionType which)
 		case SC_ReadChar:
 		{	
 		
-			int maxChar = 256;
+			int maxBytes = 256;
 			char* buffer = new char[256]; //luu day ky tu nguoi dung nhap vao (toi da 255)
-			int lengthChar = SynchConsole->Read(buffer, maxChar);
+			int numBytes = gSynchConsole->Read(buffer, maxBytes);
 
-			if(lengthChar >1) //Nhap nhieu hon 1 ky tu thi bao loi
+			if(numBytes >1) //Nhap nhieu hon 1 ky tu thi bao loi
 			{
 				printf("Input only a character ");
 				machine->WriteRegister(2, 0);
 			}
-			else if(lengthChar ==0) //NULL
+			else if(numBytes ==0) //NULL
 			{
 				printf("NULL!");
 				machine->WriteRegister(2, 0);
@@ -336,9 +336,11 @@ void ExceptionHandler(ExceptionType which)
 			
 		case SC_PrintChar:
 		{
-			
-			char c = (char)machine->ReadRegister(4); // đọc kí tự trong thanh ghi r4
-			SynchConsole->Write(&c, 1);  //xuất ra kí tự ra màn hình
+			//Input: Ki tu loai char
+			//Output: Ki tu loai char
+			//Xuat ki tu ra man hinh
+			char c = (char)machine->ReadRegister(4);
+			gSynchConsole->Write(&c, 1);
 			IncreasePC();
 			return;
 		}
