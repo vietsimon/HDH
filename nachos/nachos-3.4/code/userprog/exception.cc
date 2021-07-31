@@ -1,4 +1,4 @@
-// exception.cc 
+﻿// exception.cc 
 //	Entry point into the Nachos kernel from user programs.
 //	There are two kinds of things that can cause control to
 //	transfer back to here from user code:
@@ -309,16 +309,16 @@ void ExceptionHandler(ExceptionType which)
 		case SC_ReadChar:
 		{	
 		
-			int maxBytes = 256;
+			int maxChar = 256;
 			char* buffer = new char[256]; //luu day ky tu nguoi dung nhap vao (toi da 255)
-			int numBytes = SynchConsole->Read(buffer, maxBytes);
+			int lengthChar = SynchConsole->Read(buffer, maxChar);
 
-			if(numBytes >1) //Nhap nhieu hon 1 ky tu thi bao loi
+			if(lengthChar >1) //Nhap nhieu hon 1 ky tu thi bao loi
 			{
 				printf("Input only a character ");
 				machine->WriteRegister(2, 0);
 			}
-			else if(numBytes ==0) //NULL
+			else if(lengthChar ==0) //NULL
 			{
 				printf("NULL!");
 				machine->WriteRegister(2, 0);
@@ -336,11 +336,9 @@ void ExceptionHandler(ExceptionType which)
 			
 		case SC_PrintChar:
 		{
-			//Input: Ki tu loai char
-			//Output: Ki tu loai char
-			//Xuat ki tu ra man hinh
-			char c = (char)machine->ReadRegister(4);
-			SynchConsole->Write(&c, 1);
+			
+			char c = (char)machine->ReadRegister(4); // đọc kí tự trong thanh ghi r4
+			SynchConsole->Write(&c, 1);  //xuất ra kí tự ra màn hình
 			IncreasePC();
 			return;
 		}
